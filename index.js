@@ -1,28 +1,26 @@
-var get_source = function(main_dir, dir, file) {
-  var disclaimer = '';
-  if (file != 'Facade') {
-    var url = 'Model/design_patterns/' + main_dir + '/' + dir + '/' + file + '.js';
-  } else {
-    var url = 'Model/design_patterns/' + file + '.js';
-  }
+const get_source = (main_dir, dir, file) => {
+  const disclaimer = '';
+  const url = 'Model/design_patterns/' + (file !== 'Facade' ? main_dir + '/' + dir + '/' : '') + file + '.js';
+
   $.ajax({
     url: url,
-    dataType: 'script',
+    dataType: file !== 'Facade' ? 'script' : 'text',
     success: function(data) {
-      var editor = ace.edit('editor_' + file);
+      const editor = ace.edit('editor_' + file);
+
       editor.setTheme('ace/theme/chrome');
       editor.getSession().setMode('ace/mode/javascript');
       editor.getSession().setUseWrapMode(true);
       editor.setReadOnly(true);
       editor.setValue(disclaimer + data, -1);
     },
-    error: function(data) {
-      var editor = ace.edit('editor_' + file);
+    error: function(_) {
+      const editor = ace.edit('editor_' + file);
+
       editor.setTheme('ace/theme/chrome');
       editor.getSession().setMode('ace/mode/javascript');
       editor.getSession().setUseWrapMode(true);
-      //editor.setReadOnly(true);
       editor.setValue(disclaimer + '//Not yet', -1);
-    }
+    },
   });
-}
+};
